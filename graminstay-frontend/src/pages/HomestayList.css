@@ -1,0 +1,41 @@
+.homestay-page {
+  background: linear-gradient(135deg, #3c4d3f, #202e26);
+  min-height: 100vh;
+  color: #fff;
+  padding: 40px;
+  text-align: center;
+}
+
+.homestay-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.homestay-card {
+  background: #fff;
+  color: #333;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.homestay-card:hover {
+  transform: translateY(-5px);
+}
+
+.homestay-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.homestay-card h3 {
+  margin: 10px 0;
+}
+
+.homestay-card p {
+  margin-bottom: 10px;
+}
