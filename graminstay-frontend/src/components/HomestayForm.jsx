@@ -1,25 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-export default function HomestayForm({ initialData = {}, onSave }) {
+export default function HomestayForm({ initialData = {}, onSave, ownerId }) { // <-- Add ownerId as a prop
   const [name, setName] = useState(initialData.name || "");
-  const [photos, setPhotos] = useState(initialData.photos || []);
+  const [photos, setPhotos] = useState([]);
+  const [previewUrls, setPreviewUrls] = useState(initialData.photos || []);
   const [numRooms, setNumRooms] = useState(initialData.numRooms || "");
   const [pricePerRoom, setPricePerRoom] = useState(initialData.pricePerRoom || "");
   const [location, setLocation] = useState(initialData.location || "");
   const [description, setDescription] = useState(initialData.description || "");
 
-  useEffect(() => {
-    setName(initialData.name || "");
-    setPhotos(initialData.photos || []);
-    setNumRooms(initialData.numRooms || "");
-    setPricePerRoom(initialData.pricePerRoom || "");
-    setLocation(initialData.location || "");
-    setDescription(initialData.description || "");
-  }, [initialData]);
-
   const handlePhotoUpload = (e) => {
     const files = Array.from(e.target.files);
-    const readers = files.map((file) => {
+    setPhotos(files);
+
+    // Generate preview URLs
+    const fileReaders = files.map(file => {
       return new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result);
@@ -27,25 +22,33 @@ export default function HomestayForm({ initialData = {}, onSave }) {
       });
     });
 
-    Promise.all(readers).then((images) => {
-      setPhotos(images);
+    Promise.all(fileReaders).then(results => {
+      setPreviewUrls(results);
     });
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    onSave({
-      name,
-      photos,
-      numRooms,
-      pricePerRoom,
-      location,
-      description,
-    });
-  };
+  e.preventDefault();
+
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("numRooms", numRooms);
+  formData.append("pricePerRoom", pricePerRoom);
+  formData.append("location", location);
+  formData.append("description", description);
+  formData.append("ownerId", ownerId); // <-- Only ONCE
+
+  // Append all images
+  for (let i = 0; i < photos.length; i++) {
+    formData.append("photos", photos[i]);
+  }
+
+  onSave(formData);
+};
+
 
   return (
-    <form onSubmit={handleSubmit} style={formStyle}>
+    <form onSubmit={handleSubmit}>
       <input
         type="text"
         placeholder="Homestay Name"
@@ -60,6 +63,20 @@ export default function HomestayForm({ initialData = {}, onSave }) {
         onChange={handlePhotoUpload}
         style={inputStyle}
       /><br />
+
+      {previewUrls.length > 0 && (
+        <div style={previewContainerStyle}>
+          {previewUrls.map((url, idx) => (
+            <img
+              key={idx}
+              src={url}
+              alt={`Preview ${idx}`}
+              style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "8px" }}
+            />
+          ))}
+        </div>
+      )}
+
       <input
         type="number"
         placeholder="Number of Rooms"
@@ -85,31 +102,12 @@ export default function HomestayForm({ initialData = {}, onSave }) {
         placeholder="Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        style={{ ...inputStyle, height: "100px" }}
+        style={{ ...inputStyle, height: "80px" }}
       /><br />
-
       <button type="submit" style={buttonStyle}>Save Homestay</button>
-
-      {photos.length > 0 && (
-        <div style={previewContainerStyle}>
-          {photos.map((photo, idx) => (
-            <img
-              key={idx}
-              src={photo}
-              alt={`preview-${idx}`}
-              style={previewImageStyle}
-            />
-          ))}
-        </div>
-      )}
     </form>
   );
 }
-
-const formStyle = {
-  width: "100%",
-  maxWidth: "600px",
-};
 
 const inputStyle = {
   width: "100%",
@@ -135,13 +133,5 @@ const previewContainerStyle = {
   display: "flex",
   flexWrap: "wrap",
   gap: "10px",
-  marginTop: "1rem",
-};
-
-const previewImageStyle = {
-  width: "100px",
-  height: "100px",
-  objectFit: "cover",
-  borderRadius: "6px",
-  border: "1px solid #ccc",
+  marginBottom: "1rem",
 };
