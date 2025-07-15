@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const ownerRoutes = require('./routes/ownerRoutes');
+const userRoutes = require('./routes/userRoutes');
 const path = require('path');
 
 const app = express();
@@ -21,6 +22,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/graminstay")
   });
 
 app.use('/api', ownerRoutes);
+app.use('/api/users', userRoutes);
 
 
 app.listen(5000, () => {

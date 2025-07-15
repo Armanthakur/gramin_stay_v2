@@ -41,7 +41,7 @@ router.get('/homestay/:ownerId', async (req, res) => {
 
 // Add homestay
 router.post('/homestay', upload.array('photos', 10), async (req, res) => {
-  let { ownerId, name, numRooms, pricePerRoom, location, description } = req.body;
+  let { ownerId, name, numRooms, pricePerRoom, location, description, latitude, longitude } = req.body;
 
   // If ownerId is an array, use the first element
   if (Array.isArray(ownerId)) {
@@ -75,6 +75,12 @@ router.post('/homestay', upload.array('photos', 10), async (req, res) => {
     pricePerRoom: pricePerRoomNum,
     location,
     description,
+    latitude,
+    longitude,
+    locationPoint: {
+      type: "Point",
+      coordinates: [parseFloat(longitude), parseFloat(latitude)]
+    }
   });
 
   try {
@@ -87,7 +93,7 @@ router.post('/homestay', upload.array('photos', 10), async (req, res) => {
 
 // Update homestay
 router.put('/homestay/:ownerId', upload.array('photos', 10), async (req, res) => {
-  const { name, numRooms, pricePerRoom, location, description } = req.body;
+  const { name, numRooms, pricePerRoom, location, description, latitude, longitude } = req.body;
 
   const photoPaths = req.files && req.files.length > 0
     ? req.files.map(file => `http://localhost:5000/uploads/${file.filename}`)
@@ -99,8 +105,15 @@ router.put('/homestay/:ownerId', upload.array('photos', 10), async (req, res) =>
     pricePerRoom,
     location,
     description,
+    latitude,
+    longitude,
   };
-
+  if (latitude && longitude) {
+    updateData.locationPoint = {
+      type: "Point",
+      coordinates: [parseFloat(longitude), parseFloat(latitude)]
+    };
+  }
   if (photoPaths) {
     updateData.photos = photoPaths;
   }
@@ -134,9 +147,54 @@ router.get('/homestays/city/:cityName', async (req, res) => {
   res.json(homestays);
 });
 
+// Find homestays near a location (within 1km)
+router.get('/homestays/nearby', async (req, res) => {
+  const { lat, lng } = req.query;
+  if (!lat || !lng) {
+    return res.status(400).json({ message: "Latitude and longitude required" });
+  }
+  // 1km in meters
+  const maxDistance = 1000;
+
+  // Ensure geospatial index exists (run once in your DB or add in model)
+  // Homestay.collection.createIndex({ locationPoint: "2dsphere" });
+
+  const homestays = await Homestay.find({
+    locationPoint: {
+      $near: {
+        $geometry: { type: "Point", coordinates: [parseFloat(lng), parseFloat(lat)] },
+        $maxDistance: maxDistance
+      }
+    }
+  });
+  res.json(homestays);
+});
+
 // Add homestays
 router.post('/homestays', async (req, res) => {
   // handle file upload and save homestay
+});
+
+// Get homestay by homestayId (for details page)
+router.get('/homestay/:homestayId', async (req, res) => {
+  try {
+    const homestay = await Homestay.findById(req.params.homestayId);
+    if (!homestay) return res.status(404).json({ message: "Homestay not found" });
+    res.json(homestay);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching homestay", error: err.message });
+  }
+});
+
+// Get homestay details by homestayId
+router.get('/homestay/details/:homestayId', async (req, res) => {
+  try {
+    const homestay = await Homestay.findById(req.params.homestayId);
+    if (!homestay) return res.status(404).json({ message: "Homestay not found" });
+    res.json(homestay);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching homestay", error: err.message });
+  }
 });
 
 module.exports = router;

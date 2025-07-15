@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+// import api from "../api";
 import "./SearchBar.css";
 
 export default function SearchBar() {
@@ -8,6 +9,8 @@ export default function SearchBar() {
   const [filteredCities, setFilteredCities] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [data, setData] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("/search/state.json")
@@ -42,6 +45,23 @@ export default function SearchBar() {
     setFilteredCities(matchedCities);
     setShowSuggestions(true);
   }, [searchValue, data]);
+
+  const handleFindNearMe = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser.");
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        navigate(`/homestays/nearby?lat=${lat}&lng=${lng}`);
+      },
+      () => {
+        alert("Unable to retrieve your location.");
+      }
+    );
+  };
 
   return (
     <div className="search-container">
@@ -83,9 +103,24 @@ export default function SearchBar() {
         </div>
       )}
 
-      <Link to="/login" className="list-property-link">
-        List your property
-      </Link>
+      {/* Removed the List your property link from the bottom left */}
+
+      <button
+        type="button"
+        style={{
+          marginTop: "1.5rem",
+          background: "#3a6141",
+          color: "#fff",
+          padding: "0.8rem 1.5rem",
+          border: "none",
+          borderRadius: "8px",
+          fontSize: "1rem",
+          cursor: "pointer",
+        }}
+        onClick={handleFindNearMe}
+      >
+        Find Near Me
+      </button>
     </div>
   );
 }

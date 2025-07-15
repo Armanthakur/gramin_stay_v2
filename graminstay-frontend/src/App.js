@@ -1,21 +1,29 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SearchBar from "./components/SearchBar";
-// import HomestayList from "./pages/HomestayList";
+import HomestayList from "./pages/HomestayList";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
-import StateHomestayList from "./pages/StateHomestayList";
-import CityHomestayList from "./pages/CityHomestayList";
+import HomestayContent from "./pages/HomestayContent";
+import Navbar from "./components/Navbar";
+import UserLoginPage from "./pages/UserLoginPage";
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<SearchBar />} />
-        <Route path="/state/:stateName" element={<StateHomestayList />} />
-        <Route path="/city/:cityName" element={<CityHomestayList />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/dashboard/:ownerId" element={<DashboardPage />} />
-      </Routes>
+      <Navbar />
+      <div style={{ paddingTop: "48px" }}>
+        {/* Add padding so content is not hidden behind navbar */}
+        <Routes>
+          <Route path="/" element={<SearchBar />} />
+          <Route path="/state/:stateName" element={<HomestayList />} />
+          <Route path="/city/:cityName" element={<HomestayList />} />
+          <Route path="/homestays/nearby" element={<HomestayList />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/dashboard/:ownerId" element={<DashboardPage />} />
+          <Route path="/homestay/:homestayId" element={<HomestayContent />} />
+          <Route path="/user-login" element={<UserLoginPage />} />
+        </Routes>
+      </div>
     </Router>
   );
 }
