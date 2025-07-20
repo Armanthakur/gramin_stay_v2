@@ -1,6 +1,4 @@
 import { useState } from "react";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
 
 export default function HomestayForm({ initialData = {}, onSave, ownerId }) {
   const [name, setName] = useState(initialData.name || "");
@@ -14,7 +12,6 @@ export default function HomestayForm({ initialData = {}, onSave, ownerId }) {
   const [latitude, setLatitude] = useState(initialData.latitude || "");
   const [longitude, setLongitude] = useState(initialData.longitude || "");
   const [description, setDescription] = useState(initialData.description || "");
-  const [calendarDate, setCalendarDate] = useState(new Date());
 
   const handlePhotoUpload = (e) => {
     const files = Array.from(e.target.files);
@@ -99,37 +96,6 @@ export default function HomestayForm({ initialData = {}, onSave, ownerId }) {
           value={latitude}
           onChange={(e) => setLatitude(e.target.value)}
           style={{ ...inputStyle, flex: 1 }}
-        />
-      </div>
-
-      {/* Calendar comes here, before image upload */}
-      <div
-        style={{
-          margin: "1.5rem 0",
-          background: "#f7faf7",
-          borderRadius: "12px",
-          padding: "1.2rem 1rem",
-          boxShadow: "0 2px 12px rgba(60, 98, 85, 0.09)",
-          border: "1px solid #e0e0e0",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <span
-          style={{
-            color: "#3a6141",
-            fontWeight: 600,
-            fontSize: "1.1rem",
-            marginBottom: "0.7rem",
-          }}
-        >
-          Availability Calendar
-        </span>
-        <Calendar
-          onChange={setCalendarDate}
-          value={calendarDate}
-          minDate={new Date()}
         />
       </div>
 

@@ -1,59 +1,66 @@
 import React, { useState } from 'react';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import { useNavigate } from 'react-router-dom';
 
-const CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID'; // TODO: Replace with your actual client ID
+const CLIENT_ID = '617376943058-4pm6lsdqj5f8t1vr6i4vrngkdd31u1dl.apps.googleusercontent.com';
 
 const UserLoginPage = () => {
-  const [form, setForm] = useState({ username: '', phone: '', password: '' });
-  const [message, setMessage] = useState('');
+  const [loginForm, setLoginForm] = useState({ username: '', phone: '', password: '' });
+  const [loginMessage, setLoginMessage] = useState('');
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleLoginChange = (e) => {
+    setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setMessage('');
+    setLoginMessage('');
+    console.log('Submitting login:', loginForm);
     try {
-      const res = await fetch('/api/users/register', {
+      const res = await fetch('/api/users/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        credentials: 'include',
+        body: JSON.stringify(loginForm),
       });
       const data = await res.json();
       if (res.ok) {
-        setMessage('Registration successful!');
-        setForm({ username: '', phone: '', password: '' });
+        setLoginMessage('Login successful!');
+        setLoginForm({ username: '', phone: '', password: '' });
+        navigate('/');
+        window.location.reload();
       } else {
-        setMessage(data.error || 'Registration failed');
+        setLoginMessage(data.error || 'Login failed');
       }
     } catch (err) {
-      setMessage('Server error');
+      setLoginMessage('Server error');
     }
   };
 
   const handleGoogleSuccess = (credentialResponse) => {
-    // Handle successful Google login here
-    console.log('Google login success:', credentialResponse);
-    // Redirect or update UI as needed
+    // You may want to decode the credentialResponse to get user info
+    // For now, just store a dummy user and redirect
+    // localStorage.setItem('user', JSON.stringify({ name: 'Google User', photoURL: '/profilelogo.png' }));
+    navigate('/');
+    window.location.reload();
   };
 
-  const handleGoogleError = () => {
-    console.log('Google login failed');
-  };
+  const handleGoogleError = () => {};
 
   return (
     <GoogleOAuthProvider clientId={CLIENT_ID}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: 'linear-gradient(135deg, #3c4d3f, #202e26)' }}>
         <h2 style={{ color: '#fff', marginBottom: '2rem' }}>User Login</h2>
-        <div style={{ background: '#fff', padding: '2rem', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', minWidth: 320 }}>
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div style={{ background: '#fff', padding: '2rem', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', minWidth: 320, maxWidth: 400 }}>
+          {/* User Login Form */}
+          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: 18 }}>
             <input
               type="text"
               name="username"
               placeholder="Username"
-              value={form.username}
-              onChange={handleChange}
+              value={loginForm.username}
+              onChange={handleLoginChange}
               required
               style={{ padding: '0.7rem', borderRadius: 8, border: '1px solid #ccc' }}
             />
@@ -61,8 +68,8 @@ const UserLoginPage = () => {
               type="tel"
               name="phone"
               placeholder="Phone Number"
-              value={form.phone}
-              onChange={handleChange}
+              value={loginForm.phone}
+              onChange={handleLoginChange}
               required
               style={{ padding: '0.7rem', borderRadius: 8, border: '1px solid #ccc' }}
             />
@@ -70,17 +77,21 @@ const UserLoginPage = () => {
               type="password"
               name="password"
               placeholder="Password"
-              value={form.password}
-              onChange={handleChange}
+              value={loginForm.password}
+              onChange={handleLoginChange}
               required
               style={{ padding: '0.7rem', borderRadius: 8, border: '1px solid #ccc' }}
             />
             <button type="submit" style={{ background: '#4e7c50', color: '#fff', border: 'none', borderRadius: 8, padding: '0.7rem', fontWeight: 600, cursor: 'pointer' }}>
-              Register / Login
+              Login
             </button>
-            {message && <div style={{ color: message.includes('success') ? 'green' : 'red', marginTop: 8 }}>{message}</div>}
+            {loginMessage && <div style={{ color: loginMessage.includes('success') ? 'green' : 'red', marginTop: 8 }}>{loginMessage}</div>}
           </form>
-          <div style={{ textAlign: 'center', margin: '1.5rem 0 0.5rem', color: '#888' }}>or</div>
+
+          {/* Divider */}
+          <div style={{ textAlign: 'center', margin: '1.2rem 0 1.2rem', color: '#888', fontWeight: 500 }}>or</div>
+
+          {/* Google Login */}
           <GoogleLogin
             onSuccess={handleGoogleSuccess}
             onError={handleGoogleError}

@@ -29,6 +29,9 @@ router.post('/login', async (req, res) => {
   const isMatch = await bcrypt.compare(password, owner.password);
   if (!isMatch) return res.status(400).json({ message: "Invalid username or password" });
 
+  // Set session
+  req.session.user = { username: owner.username, ownerId: owner._id };
+
   res.json({ message: "Login successful", ownerId: owner._id });
 });
 
@@ -195,6 +198,24 @@ router.get('/homestay/details/:homestayId', async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: "Error fetching homestay", error: err.message });
   }
+});
+
+// Get current logged-in user
+router.get('/me', (req, res) => {
+  if (req.session.user) {
+    res.json({ user: req.session.user });
+  } else {
+    res.status(401).json({ user: null });
+  }
+});
+
+// Logout
+router.post('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) return res.status(500).json({ message: 'Logout failed' });
+    res.clearCookie('connect.sid');
+    res.json({ message: 'Logged out' });
+  });
 });
 
 module.exports = router;

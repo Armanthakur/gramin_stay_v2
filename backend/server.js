@@ -4,11 +4,24 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const ownerRoutes = require('./routes/ownerRoutes');
 const userRoutes = require('./routes/userRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
 const path = require('path');
+const session = require('express-session');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 app.use(bodyParser.json());
+
+// Session middleware
+app.use(session({
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 } // 1 day
+}));
 
 // Serve uploads folder
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -23,6 +36,13 @@ mongoose.connect("mongodb://127.0.0.1:27017/graminstay")
 
 app.use('/api', ownerRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/bookings', bookingRoutes);
+
+// Catch-all logger for unmatched routes
+app.use((req, res) => {
+  console.log('404 Not Found:', req.method, req.originalUrl);
+  res.status(404).send('Not found');
+});
 
 
 app.listen(5000, () => {

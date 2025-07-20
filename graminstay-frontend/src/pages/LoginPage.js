@@ -11,9 +11,11 @@ export default function LoginPage() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/login", { username, password });
+      const res = await api.post("/login", { username, password }, { withCredentials: true });
       alert("Login successful");
+      // Do not store user info in localStorage (session-based)
       navigate(`/dashboard/${res.data.ownerId}`);
+      window.location.reload();
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");
     }
