@@ -23,4 +23,14 @@ router.post('/', async (req, res) => {
   }
 });
 
+// GET /api/bookings/homestay/:homestayId - get all bookings for a homestay
+router.get('/homestay/:homestayId', async (req, res) => {
+  try {
+    const bookings = await Booking.find({ homestayId: req.params.homestayId }).sort({ fromDate: 1 });
+    res.json({ bookings });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch bookings' });
+  }
+});
+
 module.exports = router; 
