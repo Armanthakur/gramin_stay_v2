@@ -26,7 +26,7 @@ app.use(session({
 // Serve uploads folder
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-mongoose.connect("mongodb://127.0.0.1:27017/graminstay")
+mongoose.connect('mongodb+srv://ammuarmaanthakur:1mYTquuAjrez7XSg@clustergraminsay.gnvifz.mongodb.net/?retryWrites=true&w=majority&appName=Clustergraminsay')
   .then(() => {
     console.log("✅ MongoDB connected");
   })
