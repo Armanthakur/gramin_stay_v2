@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export default axios.create({
-  baseURL: `${process.env.BACKEND_URL}/api`,
+  baseURL: `https://gramin-stay-v2-backend.onrender.com/api`,
 });
