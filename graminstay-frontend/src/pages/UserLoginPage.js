@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 // Google login removed
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from "../AuthContext";
 
 const UserLoginPage = () => {
   const [loginForm, setLoginForm] = useState({ username: '', phone: '', password: '' });
   const [loginMessage, setLoginMessage] = useState('');
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const handleLoginChange = (e) => {
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
@@ -30,8 +32,8 @@ const UserLoginPage = () => {
       if (res.ok) {
         setLoginMessage('Login successful!');
         setLoginForm({ username: '', phone: '', password: '' });
+        setUser(data.user); // <-- set user in context
         navigate('/');
-        window.location.reload();
       } else {
         setLoginMessage(data.error || 'Login failed');
       }

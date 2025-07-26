@@ -2,20 +2,21 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
 import "./LoginPage.css"
+import { useAuth } from "../AuthContext";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const res = await api.post("/login", { username, password }, { withCredentials: true });
       alert("Login successful");
-      // Do not store user info in localStorage (session-based)
+      setUser(res.data.user); // <-- set user in context
       navigate(`/dashboard/${res.data.ownerId}`);
-      window.location.reload();
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");
     }

@@ -7,26 +7,29 @@ import HomestayContent from "./pages/HomestayContent";
 import Navbar from "./components/Navbar";
 import UserLoginPage from "./pages/UserLoginPage";
 import BecomeHostPage from "./pages/BecomeHostPage";
+import { AuthProvider } from "./AuthContext";
 
 function App() {
   return (
-    <Router>
-      <Navbar />
-      <div style={{ paddingTop: "48px" }}>
-        {/* Add padding so content is not hidden behind navbar */}
-        <Routes>
-          <Route path="/" element={<SearchBar />} />
-          <Route path="/state/:stateName" element={<HomestayList />} />
-          <Route path="/city/:cityName" element={<HomestayList />} />
-          <Route path="/homestays/nearby" element={<HomestayList />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/dashboard/:ownerId" element={<DashboardPage />} />
-          <Route path="/homestay/:homestayId" element={<HomestayContent />} />
-          <Route path="/user-login" element={<UserLoginPage />} />
-          <Route path="/become-host" element={<BecomeHostPage />} />
-        </Routes>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Navbar />
+        <div style={{ paddingTop: "48px" }}>
+          {/* Add padding so content is not hidden behind navbar */}
+          <Routes>
+            <Route path="/" element={<SearchBar />} />
+            <Route path="/state/:stateName" element={<HomestayList />} />
+            <Route path="/city/:cityName" element={<HomestayList />} />
+            <Route path="/homestays/nearby" element={<HomestayList />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/dashboard/:ownerId" element={<DashboardPage />} />
+            <Route path="/homestay/:homestayId" element={<HomestayContent />} />
+            <Route path="/user-login" element={<UserLoginPage />} />
+            <Route path="/become-host" element={<BecomeHostPage />} />
+          </Routes>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 

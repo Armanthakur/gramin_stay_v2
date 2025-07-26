@@ -1,18 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import api from "../api";
+import { useAuth } from "../AuthContext";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  const { user, setUser } = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
 
-  useEffect(() => {
-    // Check session-based login status
-    api.get("/me", { withCredentials: true })
-      .then(res => setUser(res.data.user))
-      .catch(() => setUser(null));
-  }, []);
+  // Removed useEffect for session check (handled by AuthProvider)
 
   const handleLogout = async () => {
     await api.post("/logout", {}, { withCredentials: true });
