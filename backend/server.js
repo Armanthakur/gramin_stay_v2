@@ -11,7 +11,7 @@ const session = require('express-session');
 
 const app = express();
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://gramin-stay-v2-backend.onrender.com',
   credentials: true
 }));
 app.use(bodyParser.json());
