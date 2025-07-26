@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -26,7 +27,7 @@ app.use(session({
 // Serve uploads folder
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-mongoose.connect('mongodb+srv://ammuarmaanthakur:1mYTquuAjrez7XSg@clustergraminsay.gnvifz.mongodb.net/?retryWrites=true&w=majority&appName=Clustergraminsay')
+mongoose.connect("mongodb+srv://ammuarmaanthakur:1mYTquuAjrez7XSg@clustergraminsay.gnvifz.mongodb.net/?retryWrites=true&w=majority&appName=Clustergraminsay")
   .then(() => {
     console.log("✅ MongoDB connected");
   })

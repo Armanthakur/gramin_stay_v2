@@ -6,6 +6,7 @@ import DashboardPage from "./pages/DashboardPage";
 import HomestayContent from "./pages/HomestayContent";
 import Navbar from "./components/Navbar";
 import UserLoginPage from "./pages/UserLoginPage";
+import BecomeHostPage from "./pages/BecomeHostPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/dashboard/:ownerId" element={<DashboardPage />} />
           <Route path="/homestay/:homestayId" element={<HomestayContent />} />
           <Route path="/user-login" element={<UserLoginPage />} />
+          <Route path="/become-host" element={<BecomeHostPage />} />
         </Routes>
       </div>
     </Router>

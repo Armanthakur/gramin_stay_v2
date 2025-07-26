@@ -44,6 +44,22 @@ export default function LoginPage() {
             Login
           </button>
         </form>
+        <div style={{ textAlign: 'center', marginTop: 18 }}>
+          <span
+            style={{
+              color: '#4e7c50',
+              fontWeight: 700,
+              cursor: 'pointer',
+              textDecoration: 'underline',
+              fontSize: '1.08rem',
+              display: 'inline-block',
+              marginTop: 10
+            }}
+            onClick={() => navigate('/become-host')}
+          >
+            List New Property
+          </span>
+        </div>
       </div>
     </div>
   );

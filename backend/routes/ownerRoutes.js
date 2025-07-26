@@ -5,6 +5,7 @@ const Homestay = require('../models/Homestay');
 const multer = require('multer');
 const path = require('path');
 const mongoose = require('mongoose');
+const nodemailer = require('nodemailer');
 
 const router = express.Router();
 
@@ -216,6 +217,45 @@ router.post('/logout', (req, res) => {
     res.clearCookie('connect.sid');
     res.json({ message: 'Logged out' });
   });
+});
+
+// Contact form endpoint for BecomeHostPage
+router.post('/contact-host-request', async (req, res) => {
+  const { name, location, rooms, phone, email } = req.body;
+  if (!name || !location || !rooms || !phone || !email) {
+    return res.status(400).json({ error: 'All fields are required.' });
+  }
+
+  // Set up Nodemailer transporter (Gmail)
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.GMAIL_USER, // your Gmail address
+      pass: process.env.GMAIL_PASS, // your Gmail app password
+    },
+  });
+
+  const mailOptions = {
+    from: process.env.GMAIL_USER,
+    to: 'armanthakur9690@gmail.com',
+    subject: 'New GraminStay Host Listing Request',
+    html: `
+      <h2>New Host Listing Request</h2>
+      <p><b>Name:</b> ${name}</p>
+      <p><b>Email:</b> ${email}</p>
+      <p><b>Phone:</b> ${phone}</p>
+      <p><b>Location:</b> ${location}</p>
+      <p><b>Rooms:</b> ${rooms}</p>
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    res.json({ message: 'Request sent successfully!' });
+  } catch (err) {
+    console.error('Email send error:', err);
+    res.status(500).json({ error: 'Failed to send email.' });
+  }
 });
 
 module.exports = router;

@@ -56,7 +56,7 @@ export default function Navbar() {
         ) : (
           <>
             <Link to="/user-login" style={styles.button}>
-              Login
+              For Users
             </Link>
             <Link
               to="/login?redirect=/homestayform"
@@ -67,7 +67,7 @@ export default function Navbar() {
                 marginLeft: "1rem",
               }}
             >
-              List your property
+              For Owners
             </Link>
           </>
         )}

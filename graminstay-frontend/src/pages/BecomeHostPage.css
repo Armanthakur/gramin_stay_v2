@@ -1,0 +1,187 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  box-sizing: border-box;
+  scrollbar-width: none; /* Firefox */
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Background gradient for the whole page */
+.become-host-bg {
+  min-height: 100vh;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 40%, #3c4d3f 100%);
+  display: block;
+  padding: 0 0 60px 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+}
+.become-host-bg::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* About Us Section */
+.about-us-section {
+  max-width: 700px;
+  margin: 48px auto 32px auto;
+  background: rgba(255,255,255,0.97);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(60, 98, 85, 0.13);
+  padding: 2.5rem 2.2rem 2.2rem 2.2rem;
+  text-align: center;
+  animation: fadeIn 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+}
+
+.about-title {
+  font-size: 2.3rem;
+  font-weight: 800;
+  color: #3a6141;
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+}
+
+.about-subtitle {
+  font-size: 1.25rem;
+  color: #4e7c50;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+}
+
+.about-desc {
+  color: #2d4739;
+  font-size: 1.08rem;
+  margin-bottom: 1.1rem;
+  line-height: 1.7;
+}
+
+.about-diff {
+  background: linear-gradient(90deg, #e8f5e9 60%, #c8e6c9 100%);
+  border-radius: 12px;
+  padding: 1.1rem 1.2rem;
+  margin: 1.2rem 0 1.2rem 0;
+  box-shadow: 0 2px 12px rgba(60, 98, 85, 0.07);
+}
+.about-diff h3 {
+  color: #388e3c;
+  font-size: 1.13rem;
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+}
+.about-diff ul {
+  list-style: disc inside;
+  color: #2d4739;
+  font-size: 1.05rem;
+  margin: 0;
+  padding: 0 0 0 1.2rem;
+  text-align: left;
+}
+.about-diff li {
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+}
+
+.about-cta {
+  margin-top: 1.7rem;
+  font-size: 1.18rem;
+  color: #fff;
+  background: linear-gradient(90deg, #4e7c50 60%, #3a6141 100%);
+  padding: 0.9rem 1.2rem;
+  border-radius: 10px;
+  font-weight: 700;
+  box-shadow: 0 2px 12px rgba(60, 98, 85, 0.13);
+  letter-spacing: 0.5px;
+  display: inline-block;
+  animation: slideIn 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Form Section */
+.become-host-form {
+  background: #fff;
+  padding: 2.5rem 2rem;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+  min-width: 320px;
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto 32px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.form-title {
+  color: #4e7c50;
+  margin-bottom: 24px;
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.form-input {
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 18px;
+  font-size: 1.05rem;
+  background: #f7faf7;
+  transition: border 0.2s;
+}
+.form-input:focus {
+  border: 1.5px solid #4e7c50;
+  outline: none;
+  background: #e8f5e9;
+}
+.form-submit-btn {
+  width: 100%;
+  background: linear-gradient(90deg, #4e7c50 60%, #3a6141 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.9rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(60, 98, 85, 0.09);
+  transition: background 0.2s, box-shadow 0.2s;
+  margin-top: 6px;
+}
+.form-submit-btn:hover {
+  background: linear-gradient(90deg, #3a6141 60%, #4e7c50 100%);
+  box-shadow: 0 4px 16px rgba(60, 98, 85, 0.13);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(40px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-fade-in {
+  animation: fadeIn 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+@keyframes slideIn {
+  0% { opacity: 0; transform: translateX(-60px) scale(0.97); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
+}
+.animate-slide-in {
+  animation: slideIn 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  .about-us-section {
+    max-width: 98vw;
+    padding: 1.5rem 0.7rem;
+  }
+  .become-host-form {
+    min-width: 0;
+    max-width: 98vw;
+    padding: 1.5rem 0.7rem;
+  }
+} 
