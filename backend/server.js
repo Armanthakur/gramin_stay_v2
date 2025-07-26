@@ -11,7 +11,7 @@ const session = require('express-session');
 
 const app = express();
 app.use(cors({
-  origin: 'https://gramin-stay-v2-backend.onrender.com',
+  origin: 'https://gramin-stay-v2.vercel.app/',
   credentials: true
 }));
 app.use(bodyParser.json());
