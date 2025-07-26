@@ -15,8 +15,12 @@ const UserLoginPage = () => {
     e.preventDefault();
     setLoginMessage('');
     console.log('Submitting login:', loginForm);
+    // Use correct backend URL depending on environment
+    const backendUrl = process.env.NODE_ENV === 'production'
+      ? 'https://gramin-stay-v2-backend.onrender.com'
+      : '';
     try {
-      const res = await fetch('/api/users/login', {
+      const res = await fetch(`${backendUrl}/api/users/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -79,4 +83,4 @@ const UserLoginPage = () => {
   );
 };
 
-export default UserLoginPage; 
+export default UserLoginPage;
