@@ -69,7 +69,7 @@ router.post('/homestay', upload.array('photos', 10), async (req, res) => {
   const existing = await Homestay.findOne({ owner: ownerId });
   if (existing) return res.status(400).json({ message: "You already have a homestay" });
 
-  const photoPaths = req.files.map(file => `http://localhost:5000/uploads/${file.filename}`);
+  const photoPaths = req.files.map(file => `${BASE_URL}/uploads/${file.filename}`);
 
   const newHomestay = new Homestay({
     owner: ownerId,
@@ -100,7 +100,7 @@ router.put('/homestay/:ownerId', upload.array('photos', 10), async (req, res) =>
   const { name, numRooms, pricePerRoom, location, description, latitude, longitude } = req.body;
 
   const photoPaths = req.files && req.files.length > 0
-    ? req.files.map(file => `http://localhost:5000/uploads/${file.filename}`)
+    ? req.files.map(file => `${BASE_URL}/uploads/${file.filename}`)
     : undefined;
 
   const updateData = {
@@ -259,3 +259,5 @@ router.post('/contact-host-request', async (req, res) => {
 });
 
 module.exports = router;
+// Add this at the top, after your other requires
+const BASE_URL = process.env.NODE_ENV === 'production' ? 'https://gramin-stay-v2-backend.onrender.com' : 'http://localhost:5000';
