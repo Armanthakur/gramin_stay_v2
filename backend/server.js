@@ -23,7 +23,12 @@ app.use(session({
   secret: 'your-secret-key',
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 } // 1 day
+  cookie: { 
+    secure: true, // Changed to true for HTTPS
+    httpOnly: true,
+    sameSite: 'none', // Added for cross-origin requests
+    maxAge: 24 * 60 * 60 * 1000 // 1 day
+  }
 }));
 
 // Serve uploads folder

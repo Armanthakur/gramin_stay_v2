@@ -6,16 +6,25 @@ const multer = require('multer');
 const path = require('path');
 const mongoose = require('mongoose');
 const nodemailer = require('nodemailer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('cloudinary').v2;
+
+// Cloudinary configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 const router = express.Router();
 
-// Multer storage config
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/'); // relative to backend root
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
+// Multer storage config for Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'graminstay/homestays',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+    transformation: [{ width: 800, height: 600, crop: 'limit' }]
   }
 });
 const upload = multer({ storage: storage });
@@ -43,11 +52,10 @@ router.get('/homestay/:ownerId', async (req, res) => {
   res.json(homestay);
 });
 
-// Add homestay
+// Add homestay - Updated for Cloudinary
 router.post('/homestay', upload.array('photos', 10), async (req, res) => {
   let { ownerId, name, numRooms, pricePerRoom, location, description, latitude, longitude } = req.body;
 
-  // If ownerId is an array, use the first element
   if (Array.isArray(ownerId)) {
     ownerId = ownerId[0];
   }
@@ -58,7 +66,6 @@ router.post('/homestay', upload.array('photos', 10), async (req, res) => {
     return res.status(400).json({ message: "Valid ownerId is required" });
   }
 
-  // Convert numRooms and pricePerRoom to numbers
   const numRoomsNum = Number(numRooms);
   const pricePerRoomNum = Number(pricePerRoom);
 
@@ -69,7 +76,8 @@ router.post('/homestay', upload.array('photos', 10), async (req, res) => {
   const existing = await Homestay.findOne({ owner: ownerId });
   if (existing) return res.status(400).json({ message: "You already have a homestay" });
 
-  const photoPaths = req.files.map(file => `${BASE_URL}/uploads/${file.filename}`);
+  // Cloudinary URLs from multer-storage-cloudinary
+  const photoPaths = req.files.map(file => file.path);
 
   const newHomestay = new Homestay({
     owner: ownerId,
@@ -95,12 +103,12 @@ router.post('/homestay', upload.array('photos', 10), async (req, res) => {
   }
 });
 
-// Update homestay
+// Update homestay - Updated for Cloudinary
 router.put('/homestay/:ownerId', upload.array('photos', 10), async (req, res) => {
   const { name, numRooms, pricePerRoom, location, description, latitude, longitude } = req.body;
 
   const photoPaths = req.files && req.files.length > 0
-    ? req.files.map(file => `${BASE_URL}/uploads/${file.filename}`)
+    ? req.files.map(file => file.path)
     : undefined;
 
   const updateData = {
@@ -131,6 +139,9 @@ router.put('/homestay/:ownerId', upload.array('photos', 10), async (req, res) =>
   if (!homestay) return res.status(400).json({ message: "Homestay not found" });
   res.json({ message: "Homestay updated", homestay });
 });
+
+// Remove the BASE_URL variable from the bottom of the file
+// Remove: const BASE_URL = process.env.NODE_ENV === 'production' ? 'https://gramin-stay-v2-backend.onrender.com' : 'http://localhost:5000';
 
 // Get homestays by location (city or state, case-insensitive, partial match)
 router.get('/homestays/location/:location', async (req, res) => {
@@ -259,5 +270,3 @@ router.post('/contact-host-request', async (req, res) => {
 });
 
 module.exports = router;
-// Add this at the top, after your other requires
-const BASE_URL = process.env.NODE_ENV === 'production' ? 'https://gramin-stay-v2-backend.onrender.com' : 'http://localhost:5000';
