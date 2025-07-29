@@ -7,18 +7,48 @@ export default function Navbar() {
   const navigate = useNavigate();
   const { user, setUser } = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  // Removed useEffect for session check (handled by AuthProvider)
+  // Add scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleLogout = async () => {
     await api.post("/logout", {}, { withCredentials: true });
     setUser(null);
     setShowDropdown(false);
     navigate("/");
+    
+    // Show toast notification
+    const toast = document.createElement('div');
+    toast.className = 'toast success';
+    toast.textContent = 'Logged out successfully';
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      setTimeout(() => document.body.removeChild(toast), 300);
+    }, 3000);
   };
 
   return (
-    <nav style={styles.navbar}>
+    <nav style={{
+      ...styles.navbar,
+      background: scrolled ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.8)',
+      boxShadow: scrolled ? '0 4px 20px rgba(0, 0, 0, 0.1)' : 'none',
+      backdropFilter: 'blur(10px)',
+      padding: scrolled ? '0.25rem 2.5rem' : '0.35rem 2.5rem',
+    }}>
       <div style={styles.left} onClick={() => navigate("/")}> 
         <img src="/logo.png" alt="Gramin Stay Logo" style={styles.logo} />
         <span style={styles.brand}>GraminStay</span>
@@ -58,7 +88,7 @@ export default function Navbar() {
               to="/login?redirect=/homestayform"
               style={{
                 ...styles.button,
-                background: "#4e7c50",
+                background: "var(--primary)",
                 color: "#fff",
                 marginLeft: "1rem",
               }}
@@ -83,9 +113,7 @@ const styles = {
     alignItems: "center",
     justifyContent: "space-between",
     padding: "0.35rem 2.5rem",
-    background: "#fff", // solid white background
-    // Remove or comment out the backdropFilter line
-    // backdropFilter: "blur(6px)",
+    transition: "all 0.3s ease",
   },
   left: {
     display: "flex",
@@ -100,12 +128,16 @@ const styles = {
     borderRadius: "50%",
     objectFit: "cover",
     background: "#fff",
-    border: "2px solid #4e7c50",
+    border: "2px solid var(--primary)",
+    transition: "transform 0.3s ease",
+    '&:hover': {
+      transform: "scale(1.05)",
+    }
   },
   brand: {
     fontSize: "1.45rem",
     fontWeight: 700,
-    color: "#2d4739",
+    color: "var(--dark)",
     letterSpacing: "1px",
     userSelect: "none",
   },
@@ -118,59 +150,78 @@ const styles = {
     padding: "0.5rem 1.2rem",
     borderRadius: "8px",
     border: "none",
-    background: "rgba(78,124,80,0.08)",
-    color: "#4e7c50",
+    background: "rgba(42, 157, 143, 0.08)",
+    color: "var(--primary)",
     fontWeight: 600,
     fontSize: "1rem",
     textDecoration: "none",
     cursor: "pointer",
-    transition: "background 0.2s, color 0.2s",
+    transition: "all 0.2s ease",
+    '&:hover': {
+      transform: "translateY(-2px)",
+      boxShadow: "0 4px 12px rgba(42, 157, 143, 0.2)",
+    }
   },
   profileIcon: {
     height: "40px",
     width: "40px",
     borderRadius: "50%",
     objectFit: "cover",
-    border: "2px solid #4e7c50",
+    border: "2px solid var(--primary)",
     cursor: "pointer",
     background: "#fff",
+    transition: "transform 0.3s ease",
+    '&:hover': {
+      transform: "scale(1.05)",
+    }
   },
   dropdown: {
     position: "absolute",
     top: "110%",
     right: 0,
     background: "#fff",
-    border: "1px solid #e0e0e0",
+    border: "1px solid var(--light-gray)",
     borderRadius: "10px",
-    boxShadow: "0 4px 16px rgba(60, 98, 85, 0.13)",
+    boxShadow: "0 4px 16px rgba(0, 0, 0, 0.1)",
     minWidth: "160px",
     zIndex: 1000,
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
+    animation: "fadeIn 0.2s ease",
+    overflow: "hidden",
   },
   logoutBtn: {
     width: "100%",
     background: "none",
     border: "none",
-    color: "#d32f2f",
+    color: "var(--danger)",
     fontWeight: 600,
     padding: "0.7rem 1.2rem",
     textAlign: "left",
     cursor: "pointer",
-    borderTop: "1px solid #eee",
+    borderTop: "1px solid var(--light-gray)",
     borderRadius: 0,
+    transition: "background 0.2s ease",
+    '&:hover': {
+      background: "rgba(231, 111, 81, 0.1)",
+    }
   },
   myHomestayBtn: {
     marginLeft: 10,
     padding: "0.5rem 1.1rem",
     borderRadius: "8px",
     border: "none",
-    background: "#4e7c50",
+    background: "var(--primary)",
     color: "#fff",
     fontWeight: 600,
     fontSize: "1rem",
     cursor: "pointer",
-    transition: "background 0.2s, color 0.2s",
+    transition: "all 0.2s ease",
+    '&:hover': {
+      transform: "translateY(-2px)",
+      boxShadow: "0 4px 12px rgba(42, 157, 143, 0.2)",
+      background: "var(--primary-dark)",
+    }
   },
 };
