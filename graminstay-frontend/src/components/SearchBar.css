@@ -6,85 +6,74 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #f0f0f0;
-  background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
-  overflow: hidden; /* Hide scrollbar */
-}
-
-.suggestions-wrap {
-  overflow-y: auto; /* Keep scroll functionality */
-  scrollbar-width: none; /* Firefox */
-}
-
-.suggestions-wrap::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
 }
 
 .search-container {
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: linear-gradient(135deg, var(--dark), var(--primary-dark));
+  height: calc(100vh - 80px); /* Adjust height for the navbar */
+  /* margin-top: 80px; */
   flex-direction: column;
-  animation: gradientBG 15s ease infinite;
-  background-size: 400% 400%;
+  text-align: center;
+  background-color: var(--light-gray);
+  padding: 2rem;
 }
 
-@keyframes gradientBG {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+.search-title {
+  font-size: 3.5rem;
+  color: var(--dark); /* Changed to dark text */
+  margin-bottom: 2rem;
+  text-shadow: none; /* Removed text shadow */
+  animation: fadeInDown 1s ease;
+}
+
+.search-wrapper {
+  position: relative;
+  width: 500px;
+  max-width: 90%;
+  animation: fadeInUp 1s ease;
 }
 
 .search-container input[type="text"] {
   padding: 1rem 1.5rem;
-  width: 450px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: rgba(255, 255, 255, 0.9);
-  color: var(--dark);
+  width: 100%;
+  border-radius: 50px;
+  border: 1px solid #0000003d; /* Lightened border */
+  background-color: var(--light); /* White background */
+  color: var(--dark); /* Dark text */
   font-size: 1.1rem;
   outline: none;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.181);
+}
+
+.search-container input[type="text"]::placeholder {
+  color: var(--gray); /* Gray placeholder text */
 }
 
 .search-container input[type="text"]:focus {
   border-color: var(--primary);
-  box-shadow: 0 8px 25px rgba(42, 157, 143, 0.25);
-  transform: translateY(-2px);
-  background-color: rgba(255, 255, 255, 0.95);
-}
-
-.search-icon {
-  position: absolute;
-  right: calc(50% - 200px + 10px);
-  color: var(--primary);
-  cursor: pointer;
-  font-size: 1.2rem;
-  transition: transform 0.3s ease;
-}
-
-.search-icon:hover {
-  transform: scale(1.2);
+  box-shadow: 0 0 0 4px rgba(42, 157, 143, 0.15);
 }
 
 .suggestions-wrap {
   position: absolute;
-  top: 60%;
-  background-color: rgba(255, 255, 255, 0.95);
+  top: 110%; /* Position below the input */
+  left: 0;
+  right: 0;
+  margin: auto;
+  background-color: var(--light);
   border-radius: 12px;
-  width: 450px;
+  width: 500px;
+  max-width: 90%;
   max-height: 300px;
   overflow-y: auto;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
   z-index: 10;
   animation: fadeIn 0.3s ease;
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid #E9ECEF;
+  text-align: left; /* Align suggestion text to the left */
 }
 
 .suggestions-wrap ul {
@@ -95,52 +84,24 @@ body {
 
 .suggestions-wrap li {
   padding: 12px 16px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid #F1F3F5;
   cursor: pointer;
   transition: all 0.2s ease;
+  color: var(--dark); /* Ensure suggestion text is dark */
 }
 
 .suggestions-wrap li:hover {
-  background-color: rgba(42, 157, 143, 0.1);
+  background-color: var(--light-gray);
   transform: translateX(5px);
 }
 
-.suggestions-wrap li:first-child {
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-}
-
-.suggestions-wrap li:last-child {
-  border-bottom: none;
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
-}
-
-.list-property-link {
-  position: absolute;
-  bottom: 30px;
-  left: 30px;
-  padding: 12px 24px;
-  background: var(--secondary);
-  color: var(--dark);
-  border-radius: 30px;
-  text-decoration: none;
-  font-weight: 600;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-.list-property-link:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  background: var(--accent);
-}
-
 .find-near-me {
+  align-items: center;
+  justify-content: center;
   margin-top: 20px;
   padding: 12px 24px;
-  background: var(--accent);
-  color: white;
+  background: rgba(0, 207, 0, 0.553);
+  color: rgb(0, 0, 0);
   border: none;
   border-radius: 30px;
   font-weight: 600;
@@ -150,14 +111,38 @@ body {
   gap: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  animation: fadeInUp 1s ease 0.2s;
+  animation-fill-mode: both;
 }
 
 .find-near-me:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  background: var(--danger);
+  box-shadow: 0 8px 25px rgba(42, 157, 143, 0.2);
+  background: var(--primary-dark);
 }
 
 .find-near-me i {
   font-size: 16px;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

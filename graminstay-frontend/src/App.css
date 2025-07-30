@@ -8,17 +8,11 @@
   --secondary: #E9C46A;
   --accent: #F4A261;
   --danger: #E76F51;
-  --dark: #264653;
-  --light: #F8F9FA;
+  --dark: #263238; /* Changed to a dark gray for text */
+  --dark-secondary: #37474F;
+  --light: #FFFFFF; /* Changed to white */
   --gray: #6C757D;
-  --light-gray: #E9ECEF;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  transition: all 0.2s ease;
+  --light-gray: #F1F3F5; /* A light gray for backgrounds */
 }
 
 body {
@@ -26,9 +20,14 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
-  background-attachment: fixed;
-  color: var(--dark);
+  background-color: var(--light-gray); /* Changed to a light background */
+  color: var(--dark); /* Default text color is now dark */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 /* Button styles */
@@ -45,6 +44,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 8px;
+  text-decoration: none;
 }
 
 .btn-primary {
@@ -59,56 +59,19 @@ body {
   box-shadow: 0 8px 25px rgba(42, 157, 143, 0.3);
 }
 
-.btn-secondary {
-  background: var(--secondary);
-  color: var(--dark);
-  box-shadow: 0 4px 15px rgba(233, 196, 106, 0.2);
-}
-
-.btn-secondary:hover {
-  background: #e0bb5c;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(233, 196, 106, 0.3);
-}
-
-.btn-accent {
-  background: var(--accent);
-  color: white;
-  box-shadow: 0 4px 15px rgba(244, 162, 97, 0.2);
-}
-
-.btn-accent:hover {
-  background: #f09552;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(244, 162, 97, 0.3);
-}
-
-.btn-danger {
-  background: var(--danger);
-  color: white;
-  box-shadow: 0 4px 15px rgba(231, 111, 81, 0.2);
-}
-
-.btn-danger:hover {
-  background: #e05e3d;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(231, 111, 81, 0.3);
-}
-
 /* Card styles */
 .card {
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--light);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
   transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
+  border: 1px solid #E9ECEF;
 }
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
 }
 
 /* Form styles */
@@ -117,51 +80,18 @@ body {
   padding: 1rem;
   margin-bottom: 1.2rem;
   border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid #CED4DA;
   font-size: 1rem;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: #F8F9FA;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  font-family: 'Poppins', sans-serif;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .form-control:focus {
   border-color: var(--primary);
-  box-shadow: 0 5px 15px rgba(42, 157, 143, 0.15);
-  transform: translateY(-2px);
+  box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.15);
   background-color: white;
   outline: none;
-}
-
-/* Toast notification */
-.toast {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 12px 20px;
-  border-radius: 8px;
-  background: var(--light);
-  color: var(--dark);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  z-index: 1000;
-  animation: slideIn 0.3s ease forwards;
-}
-
-.toast.success {
-  background: var(--primary-light);
-  color: white;
-  border-left: 4px solid var(--primary);
-}
-
-.toast.error {
-  background: var(--danger);
-  color: white;
-  border-left: 4px solid #c23b2b;
-}
-
-@keyframes slideIn {
-  from { transform: translateX(100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
 }
 
 /* Animations */
@@ -170,9 +100,11 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+@keyframes slideInRight {
+  from { transform: translateX(30px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
 }
 
+.page-enter {
+  animation: fadeIn 0.5s ease forwards;
+}

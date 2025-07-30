@@ -1,16 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
+/* In your global CSS file like index.css */
 :root {
-  --primary: #2A9D8F;
-  --primary-light: #57C7BB;
-  --primary-dark: #1E7268;
-  --secondary: #E9C46A;
-  --accent: #F4A261;
-  --danger: #E76F51;
-  --dark: #264653;
-  --light: #F8F9FA;
-  --gray: #6C757D;
-  --light-gray: #E9ECEF;
+  --primary-color: #007BFF;
+  --primary-color-dark: #0056b3;
+  --danger-color: #FF4136;
+  --bg-dark: #1A1A1A;
+  --bg-light-dark: #2C2C2C;
+  --text-light: #F5F5F5;
+  --text-dark: #1A1A1A;
 }
 
 * {

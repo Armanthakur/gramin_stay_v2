@@ -115,7 +115,7 @@ export default function BecomeHostPage() {
             required
             className="form-input"
           />
-          <button type="submit" className="form-submit-btn">
+          <button type="submit" className="button">
             Submit
           </button>
           {status && (

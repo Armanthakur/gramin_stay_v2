@@ -1,3 +1,5 @@
+
+
 .container {
   min-height: 100vh;
   background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
@@ -76,24 +78,26 @@
 
 .button {
   width: 100%;
-  padding: 1rem;
-  background-color: var(--primary);
-  color: #fff;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  background: rgba(0, 207, 0, 0.553);
+  color: rgb(0, 0, 0);
   border: none;
-  border-radius: 10px;
-  font-size: 1.1rem;
+  border-radius: 30px;
   font-weight: 600;
   cursor: pointer;
+  display: flex;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(42, 157, 143, 0.2);
-  position: relative;
-  overflow: hidden;
+  animation: fadeInUp 1s ease 0.2s;
+  animation-fill-mode: both;
 }
 
 .button:hover {
-  background-color: var(--primary-dark);
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(42, 157, 143, 0.3);
+  box-shadow: 0 8px 25px rgba(42, 157, 143, 0.2);
+  background: var(--primary-dark);
 }
 
 .button:active {

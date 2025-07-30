@@ -1,0 +1,97 @@
+.navbar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 2.5rem;
+  transition: all 0.3s ease;
+  background: var(--light); /* Solid light background */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 0.7rem;
+}
+
+.navbar-logo {
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #fff;
+  border: 2px solid var(--primary);
+  transition: transform 0.3s ease;
+}
+
+.navbar-logo:hover {
+  transform: scale(1.1) rotate(15deg);
+}
+
+.navbar-brand {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--dark); /* Dark text */
+  letter-spacing: 1px;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+/* Update user button text color */
+.navbar-right .btn {
+    color: var(--dark);
+    background-color: var(--light-gray);
+    border: 1px solid #CED4DA;
+}
+
+.navbar-right .btn-primary {
+    color: white; /* Keep primary button text white */
+    background-color: var(--primary);
+    border: none;
+}
+
+.navbar-user {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navbar-profile-icon {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid var(--primary-light);
+}
+
+.navbar-dropdown {
+  position: absolute;
+  top: 55px;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 150px;
+}
+
+.dropdown-user-info {
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  border-bottom: 1px solid #eee;
+  color: var(--dark); /* Dark text */
+}

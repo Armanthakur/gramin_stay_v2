@@ -63,16 +63,16 @@ export default function SearchBar() {
   };
 
   return (
-    <div className="search-container">
-      <input
-        type="text"
-        placeholder="Go somewhere you've never been"
-        value={searchValue}
-        onChange={(e) => setSearchValue(e.target.value)}
-        autoComplete="off"
-      />
-      <div className="search-icon">
-        <i className="fa-solid fa-magnifying-glass"></i>
+    <div className="search-container page-container">
+      <h1 className="search-title">Find your next stay</h1>
+      <div className="search-wrapper">
+        <input
+          type="text"
+          placeholder="Go somewhere you've never been"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          autoComplete="off"
+        />
       </div>
 
       {showSuggestions && (
@@ -102,22 +102,8 @@ export default function SearchBar() {
         </div>
       )}
 
-      {/* Removed the List your property link from the bottom left */}
-
-      <button
-        type="button"
-        style={{
-          marginTop: "1.5rem",
-          background: "#3a6141",
-          color: "#fff",
-          padding: "0.8rem 1.5rem",
-          border: "none",
-          borderRadius: "8px",
-          fontSize: "1rem",
-          cursor: "pointer",
-        }}
-        onClick={handleFindNearMe}
-      >
+      <button className="find-near-me" onClick={handleFindNearMe}>
+        <i className="fa-solid fa-location-arrow"></i>
         Find Near Me
       </button>
     </div>
