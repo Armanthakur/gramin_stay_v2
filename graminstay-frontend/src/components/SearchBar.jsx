@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./SearchBar.css";
+import searchData from "../data/state.json"; 
 
 export default function SearchBar() {
   const [searchValue, setSearchValue] = useState("");
@@ -12,10 +13,7 @@ export default function SearchBar() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("/search/state.json")
-      .then((res) => res.json())
-      .then((json) => setData(json))
-      .catch((err) => console.error("Error loading data", err));
+    setData(searchData);
   }, []);
 
   useEffect(() => {

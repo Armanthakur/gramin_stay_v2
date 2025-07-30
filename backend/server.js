@@ -11,7 +11,7 @@ const session = require('express-session');
 
 const app = express();
 app.use(cors({
-  origin: 'https://gramin-stay-v2.vercel.app',
+  origin: 'https://graminstay.com/',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
