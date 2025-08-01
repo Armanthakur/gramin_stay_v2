@@ -29,7 +29,7 @@ body {
 }
 
 .search-wrapper {
-  position: relative;
+  position: relative; /* This is the positioning anchor */
   width: 500px;
   max-width: 90%;
   animation: fadeInUp 1s ease;
@@ -65,14 +65,15 @@ body {
   margin: auto;
   background-color: var(--light);
   border-radius: 12px;
-  width: 500px;
-  max-width: 90%;
+  width: 100%; /* Changed to 100% to match the wrapper width */
   max-height: 300px;
   overflow-y: auto;
+  overflow-y: hidden;
+  overflow-x: hidden;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-  z-index: 10;
+  z-index: 100; /* ✅ INCREASED Z-INDEX to ensure it's on top */
   animation: fadeIn 0.3s ease;
-  border: 1px solid #E9ECEF;
+  border: 1px solid #00000033;
   text-align: left; /* Align suggestion text to the left */
 }
 
@@ -84,10 +85,17 @@ body {
 
 .suggestions-wrap li {
   padding: 12px 16px;
-  border-bottom: 1px solid #F1F3F5;
+  border-bottom: 1px solid #0000001f;
   cursor: pointer;
   transition: all 0.2s ease;
   color: var(--dark); /* Ensure suggestion text is dark */
+}
+
+/* Make the entire list item clickable */
+.suggestions-wrap li a {
+  display: block;
+  text-decoration: none;
+  color: inherit;
 }
 
 .suggestions-wrap li:hover {

@@ -1,20 +1,15 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./SearchBar.css";
-import searchData from "../data/state.json"; 
+import searchData from "../data/state.json";
 
 export default function SearchBar() {
   const [searchValue, setSearchValue] = useState("");
   const [filteredStates, setFilteredStates] = useState([]);
   const [filteredCities, setFilteredCities] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [data, setData] = useState([]);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setData(searchData);
-  }, []);
 
   useEffect(() => {
     if (searchValue.length === 0) {
@@ -24,14 +19,15 @@ export default function SearchBar() {
       return;
     }
 
-    const matchedStates = data
+    // Use the imported searchData directly for simplicity
+    const matchedStates = searchData
       .filter((item) =>
         item.state.toLowerCase().includes(searchValue.toLowerCase())
       )
       .map((item) => item.state);
 
     let matchedCities = [];
-    data.forEach((item) => {
+    searchData.forEach((item) => {
       const cities = item.cities.filter((city) =>
         city.toLowerCase().includes(searchValue.toLowerCase())
       );
@@ -41,7 +37,7 @@ export default function SearchBar() {
     setFilteredStates(matchedStates);
     setFilteredCities(matchedCities);
     setShowSuggestions(true);
-  }, [searchValue, data]);
+  }, [searchValue]); // Removed 'data' dependency
 
   const handleFindNearMe = () => {
     if (!navigator.geolocation) {
@@ -63,6 +59,8 @@ export default function SearchBar() {
   return (
     <div className="search-container page-container">
       <h1 className="search-title">Find your next stay</h1>
+
+      {/* ✅ The search input AND suggestions now live inside this wrapper */}
       <div className="search-wrapper">
         <input
           type="text"
@@ -71,34 +69,35 @@ export default function SearchBar() {
           onChange={(e) => setSearchValue(e.target.value)}
           autoComplete="off"
         />
-      </div>
 
-      {showSuggestions && (
-        <div className="suggestions-wrap">
-          <ul>
-            {filteredStates.map((state, idx) => (
-              <li key={`state-${idx}`}>
-                <Link
-                  to={`/state/${encodeURIComponent(state)}`}
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  {state}
-                </Link>
-              </li>
-            ))}
-            {filteredCities.map((city, idx) => (
-              <li key={`city-${idx}`}>
-                <Link
-                  to={`/city/${encodeURIComponent(city)}`}
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  {city}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+        {/* ✅ MOVED THIS BLOCK INSIDE THE WRAPPER */}
+        {showSuggestions && (
+          <div className="suggestions-wrap">
+            <ul>
+              {filteredStates.map((state, idx) => (
+                <li key={`state-${idx}`}>
+                  <Link
+                    to={`/state/${encodeURIComponent(state)}`}
+                    style={{ textDecoration: "none", color: "inherit", display: "block" }}
+                  >
+                    {state}
+                  </Link>
+                </li>
+              ))}
+              {filteredCities.map((city, idx) => (
+                <li key={`city-${idx}`}>
+                  <Link
+                    to={`/city/${encodeURIComponent(city)}`}
+                    style={{ textDecoration: "none", color: "inherit", display: "block" }}
+                  >
+                    {city}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
 
       <button className="find-near-me" onClick={handleFindNearMe}>
         <i className="fa-solid fa-location-arrow"></i>
