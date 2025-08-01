@@ -11,9 +11,12 @@ const session = require('express-session');
 
 const app = express();
 app.use(cors({
-  origin: 'https://graminstay.com/',
+  origin: [
+    'https://graminstay.com',      // main domain
+    'https://www.graminstay.com'   // optional www
+  ],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(bodyParser.json());
