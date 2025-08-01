@@ -18,12 +18,18 @@ export default function BecomeHostPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus("");
+    setStatus('');
+
+    // Select backend depending on environment
+    const backendUrl = process.env.NODE_ENV === 'production'
+      ? 'https://gramin-stay-v2-backend.onrender.com'
+      : '';
+
     try {
-      const res = await fetch("/api/contact-host-request", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form)
+      const res = await fetch(`${backendUrl}/api/contact-host-request`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
       });
       if (res.ok) {
         setSubmitted(true);
